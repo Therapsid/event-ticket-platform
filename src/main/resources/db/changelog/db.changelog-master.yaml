@@ -1,0 +1,331 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-create-users-table
+      author: developer
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 2-create-events-table
+      author: developer
+      changes:
+        - createTable:
+            tableName: events
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: start_time
+                  type: timestamp
+              - column:
+                  name: end_time
+                  type: timestamp
+              - column:
+                  name: venue
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sales_start_time
+                  type: timestamp
+              - column:
+                  name: sales_end_time
+                  type: timestamp
+              - column:
+                  name: status
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: organizer_id
+                  type: uuid
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: events
+            baseColumnNames: organizer_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_events_organizer
+
+  - changeSet:
+      id: 3-create-ticket-types-table
+      author: developer
+      changes:
+        - createTable:
+            tableName: ticket_types
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: double precision
+                  constraints:
+                    nullable: false
+              - column:
+                  name: total_available
+                  type: integer
+              - column:
+                  name: event_id
+                  type: uuid
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: ticket_types
+            baseColumnNames: event_id
+            referencedTableName: events
+            referencedColumnNames: id
+            constraintName: fk_ticket_types_event
+
+  - changeSet:
+      id: 4-create-tickets-table
+      author: developer
+      changes:
+        - createTable:
+            tableName: tickets
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ticket_type_id
+                  type: uuid
+              - column:
+                  name: purchaser_id
+                  type: uuid
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: tickets
+            baseColumnNames: ticket_type_id
+            referencedTableName: ticket_types
+            referencedColumnNames: id
+            constraintName: fk_tickets_type
+        - addForeignKeyConstraint:
+            baseTableName: tickets
+            baseColumnNames: purchaser_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_tickets_purchaser
+
+  - changeSet:
+      id: 5-create-ticket-validations-table
+      author: developer
+      changes:
+        - createTable:
+            tableName: ticket_validations
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: validation_method
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ticket_id
+                  type: uuid
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: ticket_validations
+            baseColumnNames: ticket_id
+            referencedTableName: tickets
+            referencedColumnNames: id
+            constraintName: fk_validations_ticket
+
+  - changeSet:
+      id: 6-create-qr-code-table
+      author: developer
+      changes:
+        - createTable:
+            tableName: qr_code
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: value
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ticket_id
+                  type: uuid
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: qr_code
+            baseColumnNames: ticket_id
+            referencedTableName: tickets
+            referencedColumnNames: id
+            constraintName: fk_qrcode_ticket
+
+  - changeSet:
+      id: 7-create-many-to-many-tables
+      author: developer
+      changes:
+        # User <-> Event (Attending)
+        - createTable:
+            tableName: user_attending_events
+            columns:
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: event_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: user_attending_events
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_attending_user
+        - addForeignKeyConstraint:
+            baseTableName: user_attending_events
+            baseColumnNames: event_id
+            referencedTableName: events
+            referencedColumnNames: id
+            constraintName: fk_attending_event
+
+        # User <-> Event (Staffing)
+        - createTable:
+            tableName: user_staffing_events
+            columns:
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: event_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: user_staffing_events
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_staffing_user
+        - addForeignKeyConstraint:
+            baseTableName: user_staffing_events
+            baseColumnNames: event_id
+            referencedTableName: events
+            referencedColumnNames: id
+            constraintName: fk_staffing_event

@@ -1,0 +1,22 @@
+services:
+  # 1. Cache (Redis)
+  redis:
+    image: redis:alpine
+    container_name: ticket-redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+  # 2. Kimlik Yönetimi (Keycloak)
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: ticket-keycloak
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    command: start-dev
+    ports:
+      - "8080:8080"
+    restart: always
+
+# Postgres'i yerel (Local) kullandığın için 'volumes' kısmına gerek yok, sildik.

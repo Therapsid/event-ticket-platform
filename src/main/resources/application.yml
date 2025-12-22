@@ -1,0 +1,43 @@
+server:
+  port: 8081  # Keycloak (8080) ile çakışmaması için harika tercih!
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tickets
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      # ÖNEMLİ: Liquibase kullanacağımız için burayı 'validate' yapıyoruz.
+      # 'update' kalırsa Liquibase ile çakışıp "users table exists" hatası verir.
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate.jdbc.lob.non_contextual_creation: true
+    open-in-view: off
+
+  # --- EKLENMESİ GEREKEN EKSİKLER ---
+
+  # 1. LIQUIBASE (Veritabanı Tablolarını Yönetmesi İçin)
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    # Geliştirme aşamasında veritabanını temizleyip baştan kurması için true yapabilirsin.
+    # Her şey oturduğunda bunu false yapmalısın.
+    drop-first: true
+
+  # 2. REDIS (Önbellek İçin)
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  # 3. KEYCLOAK (Güvenlik İçin)
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Spring Boot, gelen token'ın geçerli olup olmadığını bu adrese soracak
+          issuer-uri: http://localhost:8080/realms/ticket-platform
+          jwk-set-uri: http://localhost:8080/realms/ticket-platform/protocol/openid-connect/certs
