@@ -31,6 +31,9 @@ public class TicketType {
     @Column(name = "price",  nullable = false)
     private Double price;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "total_available")
     private Integer totalAvailable;
 
@@ -56,6 +59,7 @@ public class TicketType {
         return Objects.equals(id, that.id)
                 && Objects.equals(name, that.name)
                 && Objects.equals(price, that.price)
+                && Objects.equals(description, that.description)
                 && Objects.equals(totalAvailable, that.totalAvailable)
                 && Objects.equals(createdAt, that.createdAt)
                 && Objects.equals(updatedAt, that.updatedAt);
@@ -63,6 +67,13 @@ public class TicketType {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price, totalAvailable, createdAt, updatedAt);
+        return Objects.hash(id,
+                name,
+                price,
+                description,
+                totalAvailable,
+                createdAt,
+                updatedAt);
     }
 }
+
