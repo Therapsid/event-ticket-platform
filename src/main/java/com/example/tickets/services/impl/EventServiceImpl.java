@@ -26,7 +26,7 @@ public class EventServiceImpl implements EventService {
     public Event createEvent(UUID organizerId, CreateEventRequest event) {
         User organizer = userRepository.findById(organizerId)
                 .orElseThrow(() -> new UserNotFoundException(
-                        String.format("User with ID '%' not found", organizerId))
+                        String.format("User with ID '%s' not found", organizerId))
                 );
 
         List<TicketType> ticketTypesToCreate = event.getTicketTypes()
