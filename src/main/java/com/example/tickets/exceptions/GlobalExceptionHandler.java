@@ -1,7 +1,6 @@
-package com.example.tickets.exceptions.handler;
+package com.example.tickets.exceptions;
 
 import com.example.tickets.dtos.error.ErrorDto;
-import com.example.tickets.exceptions.UserNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -42,7 +41,7 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorDto> handleConstraintViolationException(ConstraintViolationException ex) {
         log.error("Caught constraint violation exception", ex);
         ErrorDto errorDto = new ErrorDto();

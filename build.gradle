@@ -40,6 +40,13 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+
+    // ... diğer bağımlılıklar ...
+
+        // Swagger / OpenAPI (Spring Boot 3+ ve sonrası için)
+        implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+
+
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'org.postgresql:postgresql'
 

@@ -117,6 +117,9 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: description
+                  type: varchar(500)       
+              - column:
                   name: total_available
                   type: integer
               - column:
